@@ -1,0 +1,116 @@
+function htmlToElement(html) 
+	{
+	var template = document.createElement('template');
+	html = html.trim(); // Never return a text node of whitespace as the result
+	template.innerHTML = html;
+	return template.content.firstChild;
+	}
+
+
+function init_img()
+	{
+
+	var ua = navigator.userAgent.toLowerCase()
+	var isAndroid,	isiOS,	isMac,	isLinux,	isWin
+	isAndroid=	isiOS=	isMac=	isLinux=	isWin=	0
+	try	{
+		isAndroid = ua.indexOf("android") > -1
+		isiOS 	= !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)
+		isMac	=	navigator.appVersion.indexOf("Mac")!=-1
+		isLinux	=	navigator.appVersion.indexOf("Linux")!=-1
+		isWin	=	navigator.appVersion.indexOf("Win")!=-1
+		}
+	catch(e){}
+
+
+	var	cur_sys	=	0
+	if	(
+		isWin
+		)
+		cur_sys	=	'windows'
+	else	if
+		(
+		isAndroid
+		)
+		cur_sys	=	'android'
+	else	if
+		(
+		isiOS
+		)
+		cur_sys	=	'apple'
+	else	if
+		(
+		isMac
+		)
+		cur_sys	=	'apple'
+	else	if
+		(
+		isLinux
+		)
+		cur_sys	=	'linux'
+
+	function init_images(os)
+		{
+		var	all_systems	=	[
+								'windows'
+							,	'mac'
+							,	'linux'
+							,	'android'
+							,	'web'
+							]
+		var	systems	=		[]
+		var	system_e=		[]
+		var	system_links	=		''
+
+		for	(var	i=0;	i	<	all_systems.length;	i++)
+			{
+			var	name=	all_systems[i]
+			var	e	=	document.getElementById( name )
+			if	(name	==	'mac')
+				{
+				name	=	'apple'
+				e.id	=	name
+				e.innerHTML	=	'iPhone & Mac'
+				}
+				
+			if	(e	!=	null)
+				{
+				systems	.push( name )
+				system_e.push( e )
+
+				var	nx	=	e.nextSibling
+
+				if	(nx.nodeName	==	'#text')
+					nx	=	nx.nextSibling
+
+
+				nx.style.padding	=	'16px 0 16px 21px'
+				nx.style.margin		=	'0 0 23px 0'
+				nx.style.display	=	'block'
+				nx.style.overflow	=	'auto'
+				nx.style.borderLeft	=	'5px solid #444'
+				nx.style.borderBottom=	'5px solid #444'
+				nx.style.borderRadius=	'0 0 0 13px'
+
+
+				var	added_style	=	''
+				if	(
+					cur_sys	==	name
+					)
+					added_style	=	'style="border:#00b0ff 10px solid"'
+
+				system_links	+=	'<div class="sys-nu"	'+	added_style	+'><a href="#' + name +'" id="sys-'	+	name	+	'"><span></span><br>' + name +'</a></div>'
+				// system_links	+=	'<div class="sys"><a href="#' + name +'"> <span id="wn">' + name +'</span></a></div>'
+				}
+			}
+
+
+		system_e[0].before	(
+							htmlToElement('<div class="nu-sys-container">'	+	system_links	+	'</div>')
+							)
+		}
+
+			init_images(OSName);
+	}
+
+init_img()
